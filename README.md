@@ -1,7 +1,7 @@
-Blue Team SOC Cybersecurity Practice Lab
-========================================
+Blue Team Security Operations Portfolio
+=======================================
 
-A practical, evidence-based cybersecurity portfolio project focused on Blue Team security operations, Windows event monitoring, threat detection, incident triage, threat hunting and incident response.
+An ongoing professional cybersecurity portfolio documenting hands-on Blue Team security operations, threat detection, incident investigation, network analysis and incident response. Built to develop and demonstrate practical SOC skills beyond certification.
 
 Project environment
 -------------------
@@ -10,16 +10,16 @@ Project environment
 - No Azure subscription or virtual machines required
 - Additional tools introduced only after compatibility and resource checks
 
-Learning objectives
--------------------
+Portfolio objectives
+--------------------
 1. Inspect and interpret Windows security events.
 2. Distinguish normal activity from potentially suspicious events.
 3. Investigate authentication, processes and network activity.
 4. Record evidence, observations and response recommendations.
 5. Write clear SOC investigation reports.
 
-Training roadmap
-----------------
+Professional development roadmap
+--------------------------------
 - Module 01: Windows security event monitoring and baseline investigation
 - Module 02: Network traffic analysis
 - Module 03: Network service discovery in an authorised lab
@@ -41,7 +41,7 @@ Screenshots and logs must be reviewed before publication. Redact usernames, devi
 
 Documentation
 -------------
-See Module-01/README.md for the first exercise.
+See [Module 01 — Windows Security Monitoring](Module-01/README.md) for the first documented investigation module.
 
 References
 ----------
