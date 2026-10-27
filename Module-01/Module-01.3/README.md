@@ -1,4 +1,4 @@
-Day 1.3 — Failed Logon Investigation (Event ID 4625)
+Module 1.3 — Failed Logon Investigation (Event ID 4625)
 ====================================================
 
 Status: Verification completed — 27 October 2026
@@ -79,4 +79,4 @@ References
 ----------
 - [Microsoft — Event 4625](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625)
 - [Microsoft — Get-WinEvent](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent)
-- [Main Day 1 investigation](../README.md)
+- [Main Module 01 investigation](../README.md)
