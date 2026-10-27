@@ -1,7 +1,7 @@
 Day 1 — Windows Security Event Monitoring
 =========================================
 
-Status: In progress — Event Viewer and PowerShell evidence captured on 27 October 2026.
+Status: In progress — Event Viewer and PowerShell evidence captured on 27 October 2026; Day 1.3 failed-logon verification completed.
 
 Objective
 ---------
@@ -37,7 +37,7 @@ Observed Event ID 4672, which records special privileges assigned to a new logon
 Day 1.3 — Failed logon filter (4625)
 ------------------------------------
 
-The initial filtered view showed no matches for Event ID 4625. **Validation needed:** screenshots indicate an Event Sources restriction may also have been active; clear all other filters and repeat the check before concluding there were no failed logons.
+The initial filtered view showed no matches for Event ID 4625, but Event Sources restrictions were visible. An independent PowerShell query subsequently returned `NoMatchingEventsFound` for Event ID 4625 in the retained Security log. This verifies no matching records were found at the time of the query, not that failed logons never occurred. [See the completed Day 1.3 investigation and four screenshots](Day-01.3/README.md).
 
 ![Select Filter Current Log](images/07_Select_Filter_Current_Log.png)
 
@@ -120,7 +120,7 @@ Next practical checks
 - [x] Review 4672 and 4624 events
 - [x] Capture and embed 19 Event Viewer screenshots
 - [x] Demonstrate PowerShell Get-WinEvent filtering and embed 3 screenshots
-- [ ] Clear all Event Sources restrictions and recheck Event ID 4625
+- [x] Independently verify Event ID 4625 with PowerShell (no matching records found)
 - [ ] Examine an interactive (Type 2) or unlock (Type 7) logon
 - [ ] Redact any personal or device-identifying information in screenshots before sharing publicly
 
