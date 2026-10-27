@@ -101,6 +101,11 @@ SOC Analyst findings
 
 Evidence status: Three PowerShell screenshots captured and embedded. This is a command-line supplement to the earlier Event Viewer investigation, not a repeat of the full investigation.
 
+SOC case report
+---------------
+
+[**SOC-001 — Windows Security Event Investigation Report**](SOC-001-Windows-Security-Event-Investigation/README.md) consolidates the Event IDs 4624, 4625 and 4672 findings, PowerShell verification, evidence links, limitations and case disposition.
+
 Investigation 001 — Service logon
 ---------------------------------
 - Source: Windows Security event log
