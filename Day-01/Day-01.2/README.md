@@ -24,20 +24,54 @@ Investigation procedure
 
 Evidence — Event Viewer
 -----------------------
-An initial 4672 screenshot is already published in the main Day 1 evidence collection:
 
-![Event ID 4672 — privileged logon evidence](../images/06_Event_4672_Privileged_Logon.png)
+**1. Open the Windows Run dialog**
 
-Eight additional annotated screenshots were captured for this sub-stage. Once the organised images are uploaded to this folder's `images/` directory, they should be displayed in this sequence:
+Used the Windows Run interface to launch the event monitoring console.
 
-1. `01_Open_Run_Dialog.png` — Open the Windows Run dialog
-2. `02_Launch_Event_Viewer.png` — Launch Event Viewer
-3. `03_Event_Viewer_Overview.png` — Inspect Event Viewer overview
-4. `04_Windows_Logs_Security_Log.png` — Select the Security log
-5. `05_Security_Event_4672_Details.png` — Examine privileges and account fields
-6. `06_Filter_Event_ID_4672.png` — Filter the Security log for 4672
-7. `07_Event_Source_Filter_Options.png` — Review filter options
-8. `08_Event_4672_Filtered_Results.png` — Review matching 4672 events
+![Windows Run dialog](01_Open_Run_Dialog.png)
+
+**2. Launch Event Viewer**
+
+Entered `eventvwr.msc` to open the native Windows log investigation tool.
+
+![Launch Event Viewer with eventvwr.msc](02_Launch_Event_Viewer.png)
+
+**3. Review the Event Viewer overview**
+
+Confirmed that Windows Event Viewer was available and displaying the local event-log summary.
+
+![Event Viewer overview and summary](03_Event_Viewer_Overview.png)
+
+**4. Locate the Security log**
+
+Navigated to Windows Logs and identified the Security log, which contained 32,769 retained events at the time of the screenshot.
+
+![Windows Logs Security log](04_Windows_Logs_Security_Log.png)
+
+**5. Inspect a privileged-logon event**
+
+Opened Event ID 4672 and examined the Subject fields and the privileges granted to the built-in SYSTEM account.
+
+![Event ID 4672 subject and privileges](05_Security_Event_4672_Details.png)
+
+**6. Filter for Event ID 4672**
+
+Used Filter Current Log and entered `4672` in the Event IDs field to focus on privileged-logon events.
+
+![Filter Current Log for Event ID 4672](06_Filter_Event_ID_4672.png)
+
+**7. Check the event-source filter**
+
+Reviewed the Event Sources selector. The screenshot shows additional selected sources; these should be cleared or verified when an unrestricted search is required.
+
+![Event source filter options](07_Event_Source_Filter_Options.png)
+
+**8. Review the filtered results**
+
+Observed multiple Event ID 4672 entries and inspected a SYSTEM account event with Logon ID `0x3E7`. The active source filters limit the scope of this view.
+
+![Filtered Event ID 4672 results](08_Event_4672_Filtered_Results.png)
 
 Investigation findings
 ----------------------
