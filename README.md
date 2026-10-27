@@ -45,7 +45,7 @@ See [Module 01 — Windows Security Monitoring](Module-01/README.md) for the fir
 
 References
 ----------
-- Microsoft Learn: Windows security auditing — https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/
+- Microsoft Learn: Advanced security audit policy settings — https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/advanced-security-audit-policy-settings
 - Microsoft Learn: Windows security event 4624 — https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
 - Microsoft Learn: Windows security event 4625 — https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625
 - MITRE ATT&CK — https://attack.mitre.org/
