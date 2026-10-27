@@ -1,4 +1,4 @@
-Day 1.2 — Privileged Logon Investigation (Event ID 4672)
+Module 1.2 — Privileged Logon Investigation (Event ID 4672)
 ========================================================
 
 Status: Initial investigation completed — 27 October 2026
@@ -11,7 +11,7 @@ Environment
 -----------
 - Windows 11 endpoint
 - Windows Event Viewer → Windows Logs → Security
-- Windows PowerShell (additional Day 1 command-line evidence)
+- Windows PowerShell (additional Module 01 command-line evidence)
 
 Investigation procedure
 -----------------------
@@ -73,7 +73,7 @@ Observed multiple Event ID 4672 entries and inspected a SYSTEM account event wit
 
 ![Filtered Event ID 4672 results](08_Event_4672_Filtered_Results.png)
 
-PowerShell cross-check — Day 1 evidence
+PowerShell cross-check — Module 01 evidence
 ---------------------------------------
 
 As a command-line cross-check, used PowerShell to retrieve the 30 most recent Security events matching IDs 4624, 4625 and 4672:
