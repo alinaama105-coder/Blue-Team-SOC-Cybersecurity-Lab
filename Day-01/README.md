@@ -1,7 +1,7 @@
 Day 1 — Windows Security Event Monitoring
 =========================================
 
-Status: In progress — initial evidence captured on 27 October 2026.
+Status: In progress — Event Viewer and PowerShell evidence captured on 27 October 2026.
 
 Objective
 ---------
@@ -70,6 +70,37 @@ Examined a 4624 event showing Logon Type 5 (service), NT AUTHORITY\\SYSTEM, Logo
 
 ![Event 4624 SYSTEM Account](images/19_Event_4624_SYSTEM_Account.png)
 
+Day 1.5 — PowerShell Security Log Investigation
+-----------------------------------------------
+
+Objective: Demonstrate basic SOC Tier 1 command-line investigation using the same Windows Security event log reviewed in Event Viewer. PowerShell provides an alternative interface when the Event Viewer graphical application is unavailable, provided the underlying event logs remain accessible.
+
+Step 1 — Open Windows PowerShell as Administrator
+
+![Windows PowerShell opened as Administrator](01_PowerShell_Administrator_Opened.png)
+
+Step 2 — Run a single command to retrieve recent authentication and privileged-logon events
+
+```powershell
+Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4624,4625,4672} -MaxEvents 30
+```
+
+![PowerShell Get-WinEvent filter command](02_Get-WinEvent_Command_Entered.png)
+
+Step 3 — Review the returned security events
+
+![PowerShell Security event results showing 4624 and 4672](03_Security_Event_Results_4624_4672.png)
+
+SOC Analyst findings
+
+- The command successfully retrieved the latest 30 matching records from the Windows Security log.
+- Event ID 4624 (successful logon) and Event ID 4672 (special privileges assigned) appeared repeatedly in the results.
+- Event ID 4625 (failed logon) did not appear among those 30 records. This does **not** establish that no failed logons exist elsewhere in the retained log.
+- Several 4624 and 4672 entries share timestamps. This suggests potentially related logon activity, but matching account and Logon ID fields is necessary to confirm correlation.
+- This exercise demonstrates basic PowerShell log filtering and initial triage. It does not independently establish malicious activity.
+
+Evidence status: Three PowerShell screenshots captured and embedded. This is a command-line supplement to the earlier Event Viewer investigation, not a repeat of the full investigation.
+
 Investigation 001 — Service logon
 ---------------------------------
 - Source: Windows Security event log
@@ -87,7 +118,8 @@ Next practical checks
 ---------------------
 - [x] Open Event Viewer and inspect Security log
 - [x] Review 4672 and 4624 events
-- [x] Capture and embed 19 screenshots
+- [x] Capture and embed 19 Event Viewer screenshots
+- [x] Demonstrate PowerShell Get-WinEvent filtering and embed 3 screenshots
 - [ ] Clear all Event Sources restrictions and recheck Event ID 4625
 - [ ] Examine an interactive (Type 2) or unlock (Type 7) logon
 - [ ] Redact any personal or device-identifying information in screenshots before sharing publicly
