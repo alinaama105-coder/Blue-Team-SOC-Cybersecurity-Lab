@@ -1,54 +1,100 @@
 Day 1 — Windows Security Event Monitoring
 =========================================
 
-Status: In progress — first authentication investigation completed (27 October 2026)
+Status: In progress — initial evidence captured on 27 October 2026.
 
 Objective
 ---------
-Inspect Windows Security events on a Windows 11 laptop and establish a basic authentication-event baseline using Event Viewer.
+Investigate real Windows Security log records using Event Viewer, document evidence, and distinguish observed facts from unverified assumptions.
 
-Completed steps
----------------
-1. Opened Event Viewer and inspected Windows Logs > Security.
-2. Confirmed the Security log contained more than 32,700 retained events at inspection time.
-3. Filtered Event ID 4625 (failed logon): zero matching events in the retained log at the time of the check. This does not prove that no failures occurred.
-4. Filtered Event ID 4624 (successful logon).
-5. Examined one 4624 event and identified Logon Type 5 (service logon).
-6. Inspected the New Logon account and logon identifier.
+Evidence walkthrough
+--------------------
+
+The following screenshots were uploaded to the repository root. They are embedded here in the order of the practical exercise.
+
+Day 1.1 — Event Viewer setup and baseline
+-----------------------------------------
+
+Opened Windows Event Viewer and navigated to Windows Logs > Security. The log displayed approximately 32,713 retained events at inspection time.
+
+![Open Run Dialog](../01_Open_Run_Dialog.png)
+
+![Launch Event Viewer](../02_Launch_Event_Viewer.png)
+
+![Event Viewer Overview](../03_Event_Viewer_Overview.png)
+
+![Windows Logs Overview](../04_Windows_Logs_Overview.png)
+
+![Security Log Overview](../05_Security_Log_Overview.png)
+
+Day 1.2 — Privileged logon observation (4672)
+---------------------------------------------
+
+Observed Event ID 4672, which records special privileges assigned to a new logon. This alone does not establish suspicious activity.
+
+![Event 4672 Privileged Logon](../06_Event_4672_Privileged_Logon.png)
+
+Day 1.3 — Failed logon filter (4625)
+------------------------------------
+
+The initial filtered view showed no matches for Event ID 4625. **Validation needed:** screenshots indicate an Event Sources restriction may also have been active; clear all other filters and repeat the check before concluding there were no failed logons.
+
+![Select Filter Current Log](../07_Select_Filter_Current_Log.png)
+
+![Filter Dialog](../08_Filter_Dialog.png)
+
+![Filter Event 4625](../09_Filter_Event_4625.png)
+
+![Filter Options](../10_Filter_Options.png)
+
+![Apply Event 4625 Filter](../11_Apply_Event_4625_Filter.png)
+
+![No Event 4625 Results](../12_No_Event_4625_Results.png)
+
+Day 1.4 — Successful logon investigation (4624)
+-----------------------------------------------
+
+Examined a 4624 event showing Logon Type 5 (service), NT AUTHORITY\\SYSTEM, Logon ID `0x3E7` and an elevated token. These fields are consistent with service activity, but the initiating service was not independently verified.
+
+![Change Filter To 4624](../13_Change_Filter_To_4624.png)
+
+![Event 4624 Results](../14_Event_4624_Results.png)
+
+![Security Log Properties](../15_Security_Log_Properties.png)
+
+![Event 4624 Properties](../16_Event_4624_Properties.png)
+
+![Event 4624 Logon Type 5](../17_Event_4624_Logon_Type_5.png)
+
+![Event 4624 Subject Account](../18_Event_4624_Subject_Account.png)
+
+![Event 4624 SYSTEM Account](../19_Event_4624_SYSTEM_Account.png)
 
 Investigation 001 — Service logon
 ---------------------------------
 - Source: Windows Security event log
 - Event ID: 4624
-- Date/time: 2026-10-27 12:35:22 (as displayed in Event Viewer)
+- Date/time displayed: 2026-10-27 12:35:22
 - Logon Type: 5 — Service
 - New Logon Account: SYSTEM
-- New Logon Domain: NT AUTHORITY
+- Domain: NT AUTHORITY
 - Logon ID: 0x3E7
 - Elevated Token: Yes
-- Assessment: Consistent with routine Windows service authentication; no malicious activity established from the reviewed fields.
-- Limitations: The specific service/process responsible was not independently confirmed. Further correlation would be required for a definitive benign determination.
+- Assessment: Consistent with Windows service authentication; no compromise established from the reviewed fields.
+- Limitation: The specific service/process was not confirmed.
 
-Analyst notes
--------------
-A service logon using the built-in SYSTEM account is common on Windows. An elevated token alone is not evidence of compromise. Event 4625 was not present in the retained log under the final Event ID filter; auditing configuration and retention may affect visibility.
-
-Evidence
---------
-Screenshots were reviewed in the training conversation. No raw screenshots have been published to this repository because they contain device-identifying details. Only redacted images should be added later.
-
-Checklist
----------
-- [x] Event Viewer opened
-- [x] Security log inspected
-- [x] Failed logon Event ID 4625 filter checked
-- [x] Successful logon Event ID 4624 investigated
-- [x] Findings documented
-- [ ] Redacted screenshots added to repository
-- [ ] Additional authentication patterns investigated
+Next practical checks
+---------------------
+- [x] Open Event Viewer and inspect Security log
+- [x] Review 4672 and 4624 events
+- [x] Capture and embed 19 screenshots
+- [ ] Clear all Event Sources restrictions and recheck Event ID 4625
+- [ ] Examine an interactive (Type 2) or unlock (Type 7) logon
+- [ ] Redact any personal or device-identifying information in screenshots before sharing publicly
 
 References
 ----------
-- https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
-- https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625
-- https://attack.mitre.org/
+- [Microsoft Event 4624](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624)
+- [Microsoft Event 4625](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625)
+- [Microsoft Event 4672](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4672)
+- [MITRE ATT&CK](https://attack.mitre.org/)
