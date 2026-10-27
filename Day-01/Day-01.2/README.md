@@ -73,6 +73,19 @@ Observed multiple Event ID 4672 entries and inspected a SYSTEM account event wit
 
 ![Filtered Event ID 4672 results](08_Event_4672_Filtered_Results.png)
 
+PowerShell cross-check — Day 1 evidence
+---------------------------------------
+
+As a command-line cross-check, used PowerShell to retrieve the 30 most recent Security events matching IDs 4624, 4625 and 4672:
+
+```powershell
+Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4624,4625,4672} -MaxEvents 30
+```
+
+![PowerShell results showing Event IDs 4624 and 4672](../03_Security_Event_Results_4624_4672.png)
+
+The results include repeated 4672 privileged-logon events alongside 4624 successful-logon events. Event ID 4625 was not among these 30 results; this limited sample cannot establish that no failed logons occurred. Matching timestamps alone do not prove the events belong to the same logon session; compare account and Logon ID fields for confirmation.
+
 Investigation findings
 ----------------------
 - Event ID: **4672** — Special privileges assigned to a new logon
