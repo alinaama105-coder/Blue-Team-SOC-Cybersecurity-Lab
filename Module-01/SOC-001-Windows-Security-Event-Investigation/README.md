@@ -9,6 +9,13 @@ Analyst role: SOC Tier 1 (portfolio exercise)
 Status: Core investigation documented; follow-up evidence review outstanding  
 Severity: Informational — no malicious activity established
 
+Downloadable investigation workbook
+-----------------------------------
+
+[**Download SOC-001 Windows Security Investigation Report (Excel)**](SOC-001_Windows_Security_Investigation_Report.xlsx)
+
+The Excel workbook is the structured case record; this README provides the narrative investigation and links to supporting screenshots.
+
 Executive summary
 -----------------
 This authorised, local endpoint investigation examined Windows Security Event IDs **4624 (successful logon)**, **4625 (failed logon)** and **4672 (special privileges assigned to a new logon)** using Event Viewer and PowerShell.
