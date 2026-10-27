@@ -5,7 +5,7 @@ A practical, evidence-based cybersecurity portfolio project focused on Blue Team
 
 Project environment
 -------------------
-- Windows 11 laptop with 4 GB RAM
+- Windows 11 endpoint
 - Native Windows Event Viewer and PowerShell
 - No Azure subscription or virtual machines required
 - Additional tools introduced only after compatibility and resource checks
@@ -20,20 +20,20 @@ Learning objectives
 
 Training roadmap
 ----------------
-- Day 1: Windows security event monitoring and baseline investigation
-- Day 2: Network traffic analysis
-- Day 3: Network service discovery in an authorised lab
-- Day 4: Vulnerability assessment and prioritisation
-- Day 5: Authentication attack detection using safe test data
-- Day 6: Malware evidence analysis using safe datasets
-- Day 7: Endpoint threat detection
-- Day 8: Incident response simulation
-- Day 9: Threat hunting and MITRE ATT&CK mapping
-- Day 10: Final investigation report and portfolio review
+- Module 01: Windows security event monitoring and baseline investigation
+- Module 02: Network traffic analysis
+- Module 03: Network service discovery in an authorised lab
+- Module 04: Vulnerability assessment and prioritisation
+- Module 05: Authentication attack detection using safe test data
+- Module 06: Malware evidence analysis using safe datasets
+- Module 07: Endpoint threat detection
+- Module 08: Incident response simulation
+- Module 09: Threat hunting and MITRE ATT&CK mapping
+- Module 10: Final investigation report and portfolio review
 
 Progress
 --------
-Day 1: In progress. Evidence and findings have not yet been collected.
+Module 01: In progress. Event Viewer and PowerShell evidence captured; Module 1.3 verification completed.
 
 Evidence handling
 -----------------
@@ -41,7 +41,7 @@ Screenshots and logs must be reviewed before publication. Redact usernames, devi
 
 Documentation
 -------------
-See Day-01/README.md for the first exercise.
+See Module-01/README.md for the first exercise.
 
 References
 ----------
