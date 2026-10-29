@@ -5,7 +5,7 @@ Investigation ID: SOC-002
 Date: 29 October 2026
 Environment: Authorised Windows 11 endpoint and local loopback interface
 Tools: Wireshark 4.6.9, Npcap 1.90, Windows PowerShell, curl.exe
-Status: Practical investigation completed; evidence publication pending review
+Status: Practical investigation completed; 29 screenshots embedded (privacy review still required)
 
 Objective
 ---------
@@ -58,7 +58,7 @@ Training-led review of captured endpoint network activity and controlled connect
 
 Evidence reviewed
 -----------------
-Wireshark protocol filters, TCP handshake packets, localhost SYN/RST sequences, TLS Client Hello and Server Hello, QUIC Initial frames, and PowerShell/curl test output. Screenshots are to be added under `Module-02/images/` after privacy review.
+Wireshark protocol filters, TCP handshake packets, localhost SYN/RST sequences, TLS Client Hello and Server Hello, QUIC Initial frames, and PowerShell/curl test output. Twenty-nine screenshots have been uploaded directly to `Module-02/` and embedded below. Publication does not constitute privacy clearance; inspect for exposed identifiers.
 
 Findings
 --------
@@ -85,11 +85,85 @@ Response and recommendations
 
 Outcome
 -------
-Day 02 practical objectives completed. The remaining documentation task is to upload the selected screenshots and embed them next to the corresponding analysis.
+Day 02 practical objectives completed. Twenty-nine screenshots are linked below; privacy and evidence-to-finding verification remain necessary.
 
 Evidence
 --------
-Image references will be inserted once the reviewed screenshots are present in the repository. Avoid broken links and do not publish raw private packet captures.
+Screenshot evidence — chronological capture record
+--------------------------------------------------
+The 29 uploaded screenshots are embedded below in capture order. The group labels are navigation aids based on the investigation sequence, not independent verification of each screenshot's contents. Cross-check each image against the accompanying observations before using it as evidence for a specific conclusion.
+
+Capture setup
+-------------
+
+![SOC-002 capture 01](01-SOC002-132614.png)
+
+![SOC-002 capture 02](02-SOC002-133017.png)
+
+![SOC-002 capture 03](03-SOC002-133712.png)
+
+![SOC-002 capture 04](04-SOC002-133940.png)
+
+DNS and baseline network traffic
+--------------------------------
+
+![SOC-002 capture 05](05-SOC002-134402.png)
+
+![SOC-002 capture 06](06-SOC002-135133.png)
+
+![SOC-002 capture 07](07-SOC002-135908.png)
+
+![SOC-002 capture 08](08-SOC002-140306.png)
+
+TCP analysis and connection troubleshooting
+-------------------------------------------
+
+![SOC-002 capture 09](09-SOC002-140753.png)
+
+![SOC-002 capture 10](10-SOC002-141324.png)
+
+![SOC-002 capture 11](11-SOC002-141843.png)
+
+![SOC-002 capture 12](12-SOC002-142202.png)
+
+![SOC-002 capture 13](13-SOC002-143511.png)
+
+![SOC-002 capture 14](14-SOC002-145409.png)
+
+![SOC-002 capture 15](15-SOC002-145732.png)
+
+![SOC-002 capture 16](16-SOC002-150401.png)
+
+![SOC-002 capture 17](17-SOC002-150823.png)
+
+TLS, HTTPS and QUIC investigation
+---------------------------------
+
+![SOC-002 capture 18](18-SOC002-151102.png)
+
+![SOC-002 capture 19](19-SOC002-151332.png)
+
+![SOC-002 capture 20](20-SOC002-151543.png)
+
+![SOC-002 capture 21](21-SOC002-151814.png)
+
+![SOC-002 capture 22](22-SOC002-152113.png)
+
+![SOC-002 capture 23](23-SOC002-152409.png)
+
+![SOC-002 capture 24](24-SOC002-152546.png)
+
+![SOC-002 capture 25](25-SOC002-152724.png)
+
+![SOC-002 capture 26](26-SOC002-152832.png)
+
+![SOC-002 capture 27](27-SOC002-153905.png)
+
+![SOC-002 capture 28](28-SOC002-154150.png)
+
+![SOC-002 capture 29](29-SOC002-154357.png)
+
+Do not publish raw private packet captures. Review each screenshot for exposed IP addresses, domains, device names and other identifiers.
 
 References
 ----------
