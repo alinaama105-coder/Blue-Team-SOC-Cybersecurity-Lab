@@ -33,7 +33,8 @@ Professional development roadmap
 
 Progress
 --------
-Module 01: In progress. Event Viewer and PowerShell evidence captured; Module 1.3 verification completed.
+Module 01: Completed — Windows security monitoring and SOC-001 investigation.
+Module 02: Completed — network traffic analysis and SOC-002 investigation report.
 
 Evidence handling
 -----------------
@@ -41,7 +42,9 @@ Screenshots and logs must be reviewed before publication. Redact usernames, devi
 
 Documentation
 -------------
-See [Module 01 — Windows Security Monitoring](Module-01/README.md) for the first documented investigation module.
+- [Module 01 — Windows Security Monitoring](Module-01/README.md)
+- [Module 02 — Network Traffic Analysis](Module-02/README.md)
+- [SOC-002 — Professional Investigation Report](Module-02/SOC-002-Investigation-Report.md)
 
 References
 ----------
