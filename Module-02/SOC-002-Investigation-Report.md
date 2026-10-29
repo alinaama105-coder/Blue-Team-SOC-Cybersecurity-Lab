@@ -1,138 +1,187 @@
-SOC-002 | Network Traffic Investigation and Response Report
-==========================================================
+SOC-002 — Network Traffic Investigation
+=======================================
 
-**Investigation ID:** SOC-002  
-**Date:** 29 October 2026  
-**Case type:** Authorised lab-based network investigation  
-**Classification:** Expected activity / informational  
-**Disposition:** Closed — no confirmed security incident  
-**Evidence source:** [Module 02 practical investigation and 29 screenshots](README.md)
+**29 October 2026 | Day 02 — Blue Team SOC Lab**
 
-Executive summary
------------------
-A controlled network investigation was performed on a Windows 11 endpoint using Wireshark 4.6.9, Npcap 1.90, PowerShell and curl.exe. The objective was to distinguish normal network behaviour from diagnostic anomalies and to reproduce successful and unsuccessful connections in an authorised environment.
-
-The investigator captured Wi-Fi and localhost traffic, inspected DNS, TCP, TLS and QUIC, verified a successful TCP handshake, reproduced a refused localhost connection, and then confirmed successful connectivity after starting a local TCP listener. A successful HTTPS request returned HTTP 200. A separate restricted TLS test produced a Windows Schannel error. **No malicious activity was confirmed.** No production alert was triggered, and no containment was warranted.
-
-Scope, controls and limitations
--------------------------------
-- **In scope:** Traffic from the investigator's own Windows endpoint, the Npcap loopback adapter, local test services, and an ordinary HTTPS request to a public Microsoft website.
-- **Out of scope:** Third-party scanning, exploitation, production-system response, malware execution or attribution of external IP addresses.
-- **Capture limitations:** Screenshots document the workflow but are not substitutes for a preserved PCAP and independently validated packet stream. No full-fidelity capture or packet hashes are included in this public report.
-- **Privacy:** Review screenshots for personal or network identifiers before publication. Raw captures should remain private.
-- **Analytical standard:** Observations, interpretations and unresolved questions are distinguished explicitly.
-
-Environment and methodology
----------------------------
-| Component | Detail |
+| Case detail | Record |
 | --- | --- |
-| Endpoint | Windows 11 |
-| Capture software | Wireshark 4.6.9 |
-| Packet capture driver | Npcap 1.90 |
-| Diagnostic tools | PowerShell, curl.exe |
-| Capture interfaces | Wi-Fi and Npcap Loopback Adapter |
-| Controlled TCP destinations | 127.0.0.1:2500 and 127.0.0.1:65001 |
-| HTTPS destination | https://www.microsoft.com |
-| Evidence | 29 screenshots embedded in [README](README.md) |
+| Investigation ID | SOC-002 |
+| Type | Network traffic analysis and connection troubleshooting |
+| Environment | Authorised Windows 11 endpoint and localhost |
+| Tools | Wireshark 4.6.9, Npcap 1.90, PowerShell, curl.exe |
+| Result | Expected lab activity; no confirmed compromise |
+| Severity | Informational |
+| Decision | Close — no escalation required |
 
-The workflow was: define the capture scope → select the correct interface → establish a protocol baseline → filter and inspect DNS/TCP/TLS/QUIC → reproduce localhost connection failures → start a listener and retest → validate HTTPS → document the findings and limitations.
+What happened
+-------------
+I spent this session investigating what a normal network connection looks like at packet level, then deliberately caused a few connection failures to see how they appear in Wireshark.
 
-Evidence register
------------------
-| ID | Evidence group | What it supports | Source |
-| --- | --- | --- | --- |
-| E01 | 01–04 | Capture setup and interface selection | [Screenshots 01–04](README.md#01--capture-preparation-and-interface-selection) |
-| E02 | 05–08 | Baseline capture and protocol filtering | [Screenshots 05–08](README.md#02--establishing-a-network-baseline) |
-| E03 | 09–13 | DNS/TCP packet inspection | [Screenshots 09–13](README.md#03--dns-and-tcp-investigation) |
-| E04 | 14–22 | Controlled localhost TCP troubleshooting and command output | [Screenshots 14–22](README.md#04--controlled-tcp-connection-failure-and-recovery) |
-| E05 | 23–29 | TLS/HTTPS diagnostic capture and command output | [Screenshots 23–29](README.md#05--tls-https-and-quic-analysis) |
+I captured traffic on my Windows endpoint, first through the Wi-Fi interface and then through the Npcap loopback adapter for tests against my own machine. I looked at DNS, TCP, TLS and QUIC traffic, checked whether TCP handshakes completed, and compared failed connections with successful ones.
 
-The groupings are chronological and contextual. **They do not assert that each screenshot independently proves every adjacent technical conclusion.**
+The most useful result came from testing a localhost port before and after starting a listener. The first attempt failed. Once I started a service listening on the port, the connection succeeded and the TCP handshake appeared in the capture. I also confirmed that an HTTPS request to Microsoft's website returned HTTP 200.
 
-Technical findings
-------------------
+**Bottom line:** The traffic I investigated was consistent with the tests I performed. I did not identify evidence of malicious activity. This was a training investigation, not an alert from a production SOC.
 
-**F01 — Packet capture and baseline established**  
-*Observation:* Wi-Fi and loopback packet capture was configured and protocol traffic was inspected.  
-*Interpretation:* A baseline is necessary before evaluating deviations. Wireshark packet colours and background traffic are not standalone threat indicators.  
-*Confidence:* High for successful capture; no claim of comprehensive network visibility.
+Why I investigated it
+---------------------
+The goal was to practise a question that comes up constantly in security operations: *is this network behaviour suspicious, or is there a simpler explanation?*
 
-**F02 — DNS activity observed**  
-*Observation:* DNS queries and responses appeared in the capture.  
-*Interpretation:* DNS traffic can support investigation of name resolution and host communications, but a domain appearing in a trace is not evidence of compromise.  
-*Confidence:* High for protocol presence; no domain-specific threat attribution.
+A reset packet, a retransmission or a failed TLS connection can look alarming when viewed without context. I wanted to see the packets for myself, reproduce the behaviour safely and document what the evidence actually supports.
 
-**F03 — Successful TCP handshake**  
-*Observation:* A three-way TCP handshake was observed, including example packet sequence 692 SYN → 693 SYN-ACK → 694 ACK.  
-*Interpretation:* The exchange supports successful TCP session establishment for that conversation. Retransmissions and duplicate ACKs may reflect network or capture conditions; their displayed proportion must not be treated as an independently measured packet-loss rate.  
-*Confidence:* High for the reported handshake.
+I worked only with my own endpoint and local test services. The external activity was a normal HTTPS connectivity request to `www.microsoft.com`. I did not scan or test systems I did not control.
 
-**F04 — Controlled localhost connection refused**  
-*Observation:* A test to localhost TCP port 2500 showed SYN followed by RST, ACK. A test to port 65001 failed before a listener was started.  
-*Interpretation:* The sequence is consistent with a refused connection at the tested endpoint; it does not establish malicious activity.  
-*Confidence:* High for the observed connection outcome; service state is inferred from the controlled setup.
+Investigation timeline
+----------------------
+The times below are **evidence-capture timestamps inferred from screenshot filenames**, not independently validated packet timestamps. They show the order of the work, not the precise start or end of a network session.
 
-**F05 — Localhost connection recovered after listener activation**  
-*Method:*
+| Approximate evidence time | Activity | Evidence |
+| --- | --- | --- |
+| 13:26–13:39 | Prepared capture tools and selected interfaces | [01–04](README.md#01--capture-preparation-and-interface-selection) |
+| 13:44–14:03 | Established a live-traffic baseline | [05–08](README.md#02--establishing-a-network-baseline) |
+| 14:07–14:35 | Reviewed DNS and TCP behaviour | [09–13](README.md#03--dns-and-tcp-investigation) |
+| 14:54–15:21 | Tested refused and successful localhost connections | [14–22](README.md#04--controlled-tcp-connection-failure-and-recovery) |
+| 15:24–15:43 | Tested HTTPS and inspected TLS traffic | [23–29](README.md#05--tls-https-and-quic-analysis) |
+
+The full set of 29 screenshots is embedded in the [Day 02 technical walkthrough](README.md). The images are arranged in investigation order; exact packet-level attribution should be checked against the original captures before using any individual screenshot as standalone forensic proof.
+
+What I found
+------------
+
+**01. Normal traffic was visible across several protocols**
+
+Wireshark showed a mixture of DNS, TCP and encrypted transport traffic. I used display filters to reduce the noise and inspect conversations more closely.
+
+```text
+dns
+tcp
+tls
+quic
+udp.port == 443
+```
+
+This gave me a baseline before I started the controlled tests. I did not treat a DNS lookup, a packet colour or a QUIC frame as suspicious simply because it appeared in the capture.
+
+**Assessment:** Expected network activity. No threat finding.
+
+**02. I could see TCP connections being established**
+
+I examined the TCP handshake and identified the sequence **SYN → SYN-ACK → ACK**. One recorded example used packet numbers **692, 693 and 694**.
+
+I also saw retransmission and duplicate-ACK indicators. These can be useful when troubleshooting, but they do not automatically mean an attack is underway. Without a complete conversation and supporting timing information, I cannot reliably turn those filter results into a packet-loss percentage.
+
+Filters used:
+
+```text
+tcp.flags.syn == 1 && tcp.flags.ack == 0
+tcp.flags.syn == 1 && tcp.flags.ack == 1
+tcp.analysis.retransmission
+tcp.analysis.duplicate_ack
+```
+
+**Assessment:** A successful TCP handshake was observed. Retransmission indicators were noted but not classified as malicious.
+
+**03. I reproduced a refused connection on localhost**
+
+I attempted to connect to **127.0.0.1:2500**. Wireshark showed a SYN followed by **RST, ACK**. That pattern is consistent with a connection being refused at the destination.
+
+This mattered because a reset is not, by itself, evidence of an intrusion. In this case I had deliberately created the test conditions. I also tested port **65001** before starting a listener and saw that it was not reachable.
+
+**Assessment:** Expected connection refusal during an authorised test.
+
+**04. Starting a listener changed the result**
+
+Next I started a TCP listener on **127.0.0.1:65001** and repeated the test:
+
 ```powershell
 $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Loopback, 65001)
 $listener.Start()
 Test-NetConnection 127.0.0.1 -Port 65001
 ```
-*Observation:* `TcpTestSucceeded : True` was returned and the capture showed packet sequence 732 SYN → 733 SYN-ACK → 734 ACK.  
-*Interpretation:* The listener was reachable and a TCP connection could be established. Later FIN/RST packets must be assessed as possible session termination, not automatically as failure of the earlier handshake.  
-*Confidence:* High.
 
-**F06 — Successful HTTPS/TLS test**  
-*Method:* `curl.exe -Iv --http1.1 https://www.microsoft.com`  
-*Observation:* The request completed with HTTP 200 and TLS handshake/encrypted application traffic was inspected.  
-*Interpretation:* The result confirms successful HTTPS connectivity for this test. Encryption limits the visibility of application payloads in a standard capture.  
-*Confidence:* High for successful request; exact TLS parameters should be confirmed from original logs if needed.
+PowerShell returned:
 
-**F07 — Restricted TLS compatibility test produced client-side error**  
-*Method:* `curl.exe -Iv --http1.1 --tls-max 1.0 https://www.microsoft.com`  
-*Observation:* Windows Schannel returned `SEC_E_UNSUPPORTED_FUNCTION (0x80090302)`; curl returned error 35.  
-*Interpretation:* This demonstrates a TLS client-side negotiation/configuration failure in the test environment. **A server-side TLS rejection was not established**, because the exact failed on-wire sequence and any server alert were not conclusively correlated.  
-*Confidence:* High for the observed client error; low for any server-side cause.
+```text
+TcpTestSucceeded : True
+```
 
-**F08 — QUIC/HTTP/3 transport features inspected**  
-*Observation:* QUIC Initial packets and CRYPTO, PING and PADDING frames were examined in the broader exercise.  
-*Interpretation:* These are expected features of QUIC traffic and are not indicators of compromise in isolation.  
-*Confidence:* High for protocol identification; no malicious interpretation supported.
+The corresponding captured handshake included packets **732 SYN, 733 SYN-ACK and 734 ACK**.
 
-SOC triage and risk decision
-----------------------------
-| Dimension | Assessment |
-| --- | --- |
-| Alert source | Training exercise; no production detection |
-| Asset scope | Investigator-controlled endpoint and localhost |
-| Threat indicator | None confirmed |
-| Observed impact | No confirmed compromise or security impact |
-| Severity | Informational |
-| Priority | No operational response required |
-| Classification | Expected authorised lab activity |
-| Containment | Not applicable |
-| Escalation | Not indicated |
-| Case outcome | Closed as completed investigation |
+That comparison was the clearest lesson from the session: the same destination can fail or succeed depending on whether an application is listening. I would check the service state and firewall before interpreting this type of failure as a security event.
 
-Alternative explanations considered: local listener absence, network path/capture-interface mismatch, normal TCP teardown, transient network conditions, and client-side TLS configuration. The evidence does not justify claims of attack, hostile source attribution or production incident response.
+**Assessment:** Connectivity restored under controlled conditions. No incident.
 
-Response and recommendations
-----------------------------
-1. In a genuine failed-connection incident, correlate the TCP sequence with the listener state, host firewall, route and endpoint logs.
-2. For suspected TLS failures, retain the precise curl/Schannel output, protocol version, certificate details and matching packet stream before assigning server or client responsibility.
-3. For repeated retransmissions, measure timing and context across a complete conversation; do not equate Wireshark filter counts with packet-loss percentage.
-4. Preserve original PCAP files privately, maintain timestamps and file hashes when building a formal evidence chain, and publish only reviewed/redacted screenshots.
-5. Expand future exercises into authorised network service discovery and correlate findings with host logs.
+**05. HTTPS worked; the restricted TLS test did not**
 
-Investigation conclusion
-------------------------
-SOC-002 demonstrates practical capture setup, protocol interpretation, safe reproduction of network connection failures, validation of recovery, and evidence-based SOC reporting. All documented tests were authorised. **No confirmed security incident occurred.** The report deliberately limits conclusions where screenshot evidence or packet-level correlation is insufficient.
+I checked ordinary HTTPS connectivity with:
 
-Report status: Final for the documented training exercise; technical conclusions are bounded by the evidence described above.
+```powershell
+curl.exe -Iv --http1.1 https://www.microsoft.com
+```
 
-References
-----------
+The request returned **HTTP 200 OK**. I also inspected TLS handshake traffic, including Client Hello and Server Hello messages, followed by encrypted application traffic.
+
+I then tried a deliberately restricted TLS configuration:
+
+```powershell
+curl.exe -Iv --http1.1 --tls-max 1.0 https://www.microsoft.com
+```
+
+This failed with **curl error 35** and the Windows Schannel message:
+
+```text
+SEC_E_UNSUPPORTED_FUNCTION (0x80090302)
+```
+
+The error confirms a problem with the restricted TLS attempt in the client environment. It does **not** prove that Microsoft's server rejected the connection: I did not conclusively match the entire failed packet exchange to a server-side alert. I would need the original capture and a complete correlated handshake to make that claim.
+
+**Assessment:** Successful normal HTTPS test; deliberately restricted TLS attempt failed with a client-side error. No evidence of an attack.
+
+**06. QUIC traffic was present**
+
+I examined QUIC Initial packets and frames such as CRYPTO, PING and PADDING. QUIC is commonly used for HTTP/3 over UDP/443, so these frames were not unexpected in a modern endpoint capture.
+
+**Assessment:** Protocol activity observed. No malicious interpretation supported.
+
+Evidence and confidence
+-----------------------
+| Finding | Supporting evidence | Confidence | What I cannot conclude |
+| --- | --- | --- | --- |
+| TCP three-way handshake | Wireshark sequence 692–694 | High | That every TCP flow in the capture succeeded |
+| Refused localhost connection | SYN then RST, ACK to port 2500 | High | That a firewall or attacker caused it |
+| Successful local listener test | `TcpTestSucceeded : True` and sequence 732–734 | High | That the service would remain available outside the test |
+| Successful HTTPS request | curl HTTP 200 and TLS activity | High | The precise security settings of unrelated sessions |
+| Restricted TLS failure | curl 35 and Schannel error | High for the error | That the remote server definitively rejected the handshake |
+| QUIC and DNS observations | Filtered packet views | Moderate for context | That observed endpoints were malicious |
+
+The [Day 02 walkthrough](README.md) contains the screenshots and the detailed technical steps. The evidence is sufficient to explain the lab results, but I have **not** preserved a formal forensic chain of custody in this public repository. The report should not be presented as a production forensic examination.
+
+My decision
+-----------
+**Close SOC-002 as expected, authorised training activity.**
+
+There was no confirmed malicious connection, compromised host, unauthorised access or production security alert. The connection failures were part of the test plan and were explained by the controlled conditions or by a client-side TLS error.
+
+I would **not** block an IP address, isolate the endpoint or escalate this as a security incident based on the evidence collected.
+
+What I would do differently in a live SOC
+-----------------------------------------
+If the same symptoms appeared in a real alert, I would first establish the affected host, user, destination, time window and alert source. I would then correlate the packet capture with endpoint telemetry, service status, firewall logs and the relevant application logs.
+
+For a TLS failure, I would check the client and server protocol configuration and match the command output to the exact packet stream. For repeated retransmissions, I would investigate latency and packet timing rather than assume an attack or estimate loss from a Wireshark display filter.
+
+I would preserve the original PCAP privately, record hashes and timestamps for any evidence used in a formal investigation, and redact identifiers before publishing screenshots.
+
+Lessons from Day 02
+-------------------
+This exercise reinforced an important SOC habit: **explain the network behaviour before assigning it a security meaning**.
+
+I practised capturing traffic, finding the relevant packets, reproducing a failure, testing a fix and documenting the limits of my conclusions. The most valuable part was not the number of packets captured; it was being able to explain why the localhost connection failed, why it later succeeded, and why the TLS error did not justify a stronger claim.
+
+**Case status: Closed. Day 02 objectives completed.**
+
+Technical references
+--------------------
 - [Wireshark User's Guide](https://www.wireshark.org/docs/wsug_html_chunked/)
 - [Wireshark Display Filter Reference](https://www.wireshark.org/docs/dfref/)
 - [RFC 9293 — TCP](https://www.rfc-editor.org/rfc/rfc9293)
