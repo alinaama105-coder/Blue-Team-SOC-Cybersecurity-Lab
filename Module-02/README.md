@@ -1,6 +1,8 @@
 Day 02 — Network Traffic Analysis and Handshake Troubleshooting
 ================================================================
 
+**[Read the standalone SOC-002 professional investigation report](SOC-002-Investigation-Report.md)**
+
 Investigation: SOC-002 | Date: 29 October 2026 | Status: Practical exercises completed; evidence reviewed for documentation, privacy clearance still required
 
 Purpose
